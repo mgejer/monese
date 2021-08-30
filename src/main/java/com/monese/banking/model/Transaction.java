@@ -1,6 +1,7 @@
 package com.monese.banking.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -10,13 +11,13 @@ public class Transaction {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     private Double amount;
-    private Date date;
+    private LocalDateTime date;
     private long origin;
     private long destination;
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    public Transaction(Double amount, Date date, long origin, long destination, Status status) {
+    public Transaction(Double amount, LocalDateTime date, long origin, long destination, Status status) {
         this.amount = amount;
         this.date = date;
         this.origin = origin;
@@ -32,7 +33,7 @@ public class Transaction {
         return amount;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
