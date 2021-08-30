@@ -1,6 +1,9 @@
 package com.monese.banking.service;
 
 import com.monese.banking.dao.AccountRepository;
+import com.monese.banking.exceptions.DestinationNotFoundException;
+import com.monese.banking.exceptions.OriginNotFoundException;
+import com.monese.banking.exceptions.UnsufficientFoundsException;
 import com.monese.banking.model.Account;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +29,8 @@ public class AccountServiceTest {
     @Mock
     private AccountRepository repository;
     @Mock
+    private TransactionService transactionService;
+    @Mock
     private Account originAccount, destinationAccount;
 
     @BeforeEach
@@ -42,20 +47,21 @@ public class AccountServiceTest {
         verify(destinationAccount).addToBalance(100);
         verify(repository).save(originAccount);
         verify(repository).save(destinationAccount);
+        verify(transactionService).createSuccessfulTransaction(100, ORIGIN, DESTINATION);
     }
 
     @Test
     public void transferFromNonExistentAccountThrowsException() {
-        assertThrows(RuntimeException.class, ()-> accountService.transfer(300, DESTINATION, 100));
+        assertThrows(OriginNotFoundException.class, ()-> accountService.transfer(300, DESTINATION, 100));
     }
 
     @Test
     public void transferToNonExistentAccountThrowsException() {
-        assertThrows(RuntimeException.class, ()-> accountService.transfer(ORIGIN, 300, 100));
+        assertThrows(DestinationNotFoundException.class, ()-> accountService.transfer(ORIGIN, 300, 100));
     }
 
     @Test
     public void transferInsufficientAmountThrowsException() {
-        assertThrows(RuntimeException.class, ()-> accountService.transfer(ORIGIN, DESTINATION, 400));
+        assertThrows(UnsufficientFoundsException.class, ()-> accountService.transfer(ORIGIN, DESTINATION, 400));
     }
 }
