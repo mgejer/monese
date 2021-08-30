@@ -6,6 +6,8 @@ import com.monese.banking.service.AccountService;
 import com.monese.banking.service.TransactionService;
 import com.monese.banking.web.mapper.AccountAPI;
 import com.monese.banking.web.mapper.AccountMapper;
+import com.monese.banking.web.mapper.TransactionAPI;
+import com.monese.banking.web.mapper.TransactionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,8 @@ public class AccountController {
     private TransactionService transactionService;
     @Autowired
     private AccountMapper accountMapper;
+    @Autowired
+    private TransactionMapper transactionMapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<AccountAPI> getAccount(@PathVariable Long id, @RequestParam(required = false) Integer daysInPast) {
@@ -34,7 +38,7 @@ public class AccountController {
     }
 
     @PostMapping("/transaction")
-    public ResponseEntity<Transaction> postTransaction(@RequestParam long originId, @RequestParam long destinationId, @RequestParam double amount) {
-        return new ResponseEntity(accountService.transfer(originId, destinationId, amount), HttpStatus.ACCEPTED);
+    public ResponseEntity<TransactionAPI> postTransaction(@RequestParam long origin, @RequestParam long destination, @RequestParam double amount) {
+        return new ResponseEntity(transactionMapper.map(origin, accountService.transfer(origin, destination, amount)), HttpStatus.OK);
     }
 }

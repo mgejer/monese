@@ -10,6 +10,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+//TODO: unit test
 @Component
 public class AccountMapper {
     @Autowired
@@ -18,7 +19,7 @@ public class AccountMapper {
     public AccountAPI map(Account account, Collection<Transaction> transactions) {
 
         List<TransactionAPI> mappedTransactions = transactions.stream()
-                .map((Transaction transaction) -> TransactionMapper.map(account.getId(), transaction))
+                .map((Transaction transaction) -> transactionMapper.map(account.getId(), transaction))
                 .collect(toList());
 
         return new AccountAPI(account.getId(), account.getBalance(), mappedTransactions);

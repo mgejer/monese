@@ -6,15 +6,13 @@ public class TransactionAPI {
     private final String date;
     private final long account;
     private final double amount;
-    private final String status;
 
-    public TransactionAPI(long id, TransactionType type, String date, long account, double amount, String status) {
+    public TransactionAPI(long id, TransactionType type, String date, long account, double amount) {
         this.id = id;
         this.type = type;
         this.date = date;
         this.account = account;
         this.amount = amount;
-        this.status = status;
     }
 
     public long getId() {
@@ -31,10 +29,6 @@ public class TransactionAPI {
 
     public long getAccount() {
         return account;
-    }
-
-    public String getStatus() {
-        return status;
     }
 
     public double getAmount() {
