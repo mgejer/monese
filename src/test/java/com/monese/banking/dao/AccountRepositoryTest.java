@@ -14,13 +14,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class AccountRepositoryTest {
+class AccountRepositoryTest {
 
     @Autowired
     private AccountRepository repository;
 
     @Test
-    public void findById() {
+    void findById() {
         double balance = 156d;
         Account account = repository.save(new Account(balance));
         assertNotNull(account.getId());
