@@ -2,7 +2,6 @@ package com.monese.banking.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 public class Transaction {
