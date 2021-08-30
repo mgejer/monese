@@ -1,7 +1,5 @@
 package com.monese.banking.web;
 
-import com.monese.banking.exceptions.OriginNotFoundException;
-import com.monese.banking.model.Transaction;
 import com.monese.banking.service.AccountService;
 import com.monese.banking.service.TransactionService;
 import com.monese.banking.web.mapper.AccountAPI;
@@ -9,14 +7,12 @@ import com.monese.banking.web.mapper.AccountMapper;
 import com.monese.banking.web.mapper.TransactionAPI;
 import com.monese.banking.web.mapper.TransactionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-//TODO unit test of api
 //TODO integration test of application
 
 @RestController

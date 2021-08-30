@@ -30,8 +30,8 @@ public class AccountService {
 
     @Transactional
     public Transaction transfer(long from, long to, double amount) {
-        Account origin = repository.lockedFindById(from).orElseThrow(DestinationNotFoundException::new);
-        Account destination = repository.lockedFindById(to).orElseThrow(OriginNotFoundException::new);
+        Account origin = repository.lockedFindById(from).orElseThrow(OriginNotFoundException::new);
+        Account destination = repository.lockedFindById(to).orElseThrow(DestinationNotFoundException::new);
 
         if (origin.getBalance() < amount) {
             throw new InsufficientFoundsException();

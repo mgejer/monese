@@ -1,6 +1,7 @@
 package com.monese.banking.service;
 
 import com.monese.banking.dao.AccountRepository;
+import com.monese.banking.exceptions.AccountNotFoundException;
 import com.monese.banking.exceptions.DestinationNotFoundException;
 import com.monese.banking.exceptions.OriginNotFoundException;
 import com.monese.banking.exceptions.InsufficientFoundsException;
@@ -14,15 +15,15 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-public class AccountServiceTest {
+class AccountServiceTest {
 
-    public static final long ORIGIN = 100;
-    public static final long DESTINATION = 200;
+    private static final long ORIGIN = 100;
+    private static final long DESTINATION = 200;
 
     @InjectMocks
     private AccountService accountService;
@@ -34,14 +35,14 @@ public class AccountServiceTest {
     private Account originAccount, destinationAccount;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         when(originAccount.getBalance()).thenReturn(200d);
         when(repository.lockedFindById(ORIGIN)).thenReturn(Optional.of(originAccount));
         when(repository.lockedFindById(DESTINATION)).thenReturn(Optional.of(destinationAccount));
     }
 
     @Test
-    public void transfer() {
+    void transfer() {
         accountService.transfer(ORIGIN, DESTINATION, 100);
         verify(originAccount).addToBalance(-100);
         verify(destinationAccount).addToBalance(100);
@@ -51,17 +52,30 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void transferFromNonExistentAccountThrowsException() {
-        assertThrows(OriginNotFoundException.class, ()-> accountService.transfer(300, DESTINATION, 100));
+    void transferFromNonExistentAccountThrowsException() {
+        assertThrows(OriginNotFoundException.class, () -> accountService.transfer(300, DESTINATION, 100));
     }
 
     @Test
-    public void transferToNonExistentAccountThrowsException() {
-        assertThrows(DestinationNotFoundException.class, ()-> accountService.transfer(ORIGIN, 300, 100));
+    void transferToNonExistentAccountThrowsException() {
+        assertThrows(DestinationNotFoundException.class, () -> accountService.transfer(ORIGIN, 300, 100));
     }
 
     @Test
-    public void transferInsufficientAmountThrowsException() {
-        assertThrows(InsufficientFoundsException.class, ()-> accountService.transfer(ORIGIN, DESTINATION, 400));
+    void transferInsufficientAmountThrowsException() {
+        assertThrows(InsufficientFoundsException.class, () -> accountService.transfer(ORIGIN, DESTINATION, 400));
+    }
+
+    @Test
+    void testRetrieve() {
+        Account account = mock(Account.class);
+        when(repository.findById(100L)).thenReturn(Optional.of(account));
+        assertEquals(account, accountService.retrieve(100));
+    }
+
+    @Test
+    void testRetrieveNotFoundThrowsException() {
+        when(repository.findById(100L)).thenReturn(Optional.empty());
+        assertThrows(AccountNotFoundException.class, () -> accountService.retrieve(100));
     }
 }

@@ -11,7 +11,6 @@ import java.util.Optional;
 
 import static java.time.LocalDateTime.now;
 
-//TODO create methods for failed transactions
 //TODO unit tests
 
 @Component
