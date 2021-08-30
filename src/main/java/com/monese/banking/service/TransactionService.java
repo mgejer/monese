@@ -1,7 +1,6 @@
 package com.monese.banking.service;
 
 import com.monese.banking.dao.TransactionRepository;
-import com.monese.banking.model.Status;
 import com.monese.banking.model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +28,6 @@ public class TransactionService {
     }
 
     public Transaction createSuccessfulTransaction (double amount, long from, long to) {
-        return repository.save(new Transaction(amount, now(), from, to, Status.SUCCESSFUL));
+        return repository.save(new Transaction(amount, now(), from, to));
     }
 }

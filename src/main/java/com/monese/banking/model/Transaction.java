@@ -13,15 +13,12 @@ public class Transaction {
     private LocalDateTime date;
     private long origin;
     private long destination;
-    @Enumerated(EnumType.STRING)
-    private Status status;
 
-    public Transaction(Double amount, LocalDateTime date, long origin, long destination, Status status) {
+    public Transaction(Double amount, LocalDateTime date, long origin, long destination) {
         this.amount = amount;
         this.date = date;
         this.origin = origin;
         this.destination = destination;
-        this.status = status;
     }
 
     public Long getId() {
@@ -44,7 +41,4 @@ public class Transaction {
         return destination;
     }
 
-    public Status getStatus() {
-        return status;
-    }
 }
