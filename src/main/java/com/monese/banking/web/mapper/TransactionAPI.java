@@ -1,6 +1,6 @@
-package com.monese.banking.web;
+package com.monese.banking.web.mapper;
 
-class TransactionAPI {
+public class TransactionAPI {
     private final long id;
     private final TransactionType type;
     private final String date;
@@ -8,7 +8,7 @@ class TransactionAPI {
     private final double amount;
     private final String status;
 
-    TransactionAPI(long id, TransactionType type, String date, long account, double amount, String status) {
+    public TransactionAPI(long id, TransactionType type, String date, long account, double amount, String status) {
         this.id = id;
         this.type = type;
         this.date = date;

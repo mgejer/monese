@@ -1,4 +1,4 @@
-package com.monese.banking.web;
+package com.monese.banking.web.mapper;
 
 import com.monese.banking.model.Transaction;
 import org.springframework.stereotype.Component;

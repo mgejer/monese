@@ -3,7 +3,7 @@ package com.monese.banking.service;
 import com.monese.banking.dao.AccountRepository;
 import com.monese.banking.exceptions.DestinationNotFoundException;
 import com.monese.banking.exceptions.OriginNotFoundException;
-import com.monese.banking.exceptions.UnsufficientFoundsException;
+import com.monese.banking.exceptions.InsufficientFoundsException;
 import com.monese.banking.model.Account;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,6 +62,6 @@ public class AccountServiceTest {
 
     @Test
     public void transferInsufficientAmountThrowsException() {
-        assertThrows(UnsufficientFoundsException.class, ()-> accountService.transfer(ORIGIN, DESTINATION, 400));
+        assertThrows(InsufficientFoundsException.class, ()-> accountService.transfer(ORIGIN, DESTINATION, 400));
     }
 }

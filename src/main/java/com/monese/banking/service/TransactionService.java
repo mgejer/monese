@@ -3,15 +3,22 @@ package com.monese.banking.service;
 import com.monese.banking.dao.TransactionRepository;
 import com.monese.banking.model.Status;
 import com.monese.banking.model.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Optional;
 
 import static java.time.LocalDateTime.now;
 
+//TODO create methods for failed transactions
+//TODO unit tests
+
+@Component
 public class TransactionService {
 
+    @Autowired
     private TransactionRepository repository;
 
     @Value("${default.transactions.by.account.max.amount.days.search: 30}")

@@ -1,4 +1,4 @@
-package com.monese.banking.web;
+package com.monese.banking.web.mapper;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ public class AccountAPI {
     private double balance;
     private List<TransactionAPI> transactions;
 
-    AccountAPI(Long id, double balance, List<TransactionAPI> transactions) {
+    public AccountAPI(Long id, double balance, List<TransactionAPI> transactions) {
         this.id = id;
         this.balance = balance;
         this.transactions = transactions;
@@ -24,4 +24,5 @@ public class AccountAPI {
     public List<TransactionAPI> getTransactions() {
         return transactions;
     }
+
 }

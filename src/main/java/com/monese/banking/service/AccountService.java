@@ -1,17 +1,19 @@
 package com.monese.banking.service;
 
 import com.monese.banking.dao.AccountRepository;
+import com.monese.banking.exceptions.AccountNotFoundException;
 import com.monese.banking.exceptions.DestinationNotFoundException;
 import com.monese.banking.exceptions.OriginNotFoundException;
-import com.monese.banking.exceptions.UnsufficientFoundsException;
+import com.monese.banking.exceptions.InsufficientFoundsException;
 import com.monese.banking.model.Account;
-import com.monese.banking.model.Status;
 import com.monese.banking.model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
-import java.util.Date;
+
+//TODO create test for retrieve.
+//TODO check tests of transfer
 
 @Component
 public class AccountService {
@@ -23,16 +25,16 @@ public class AccountService {
     private TransactionService transactionService;
 
     public Account retrieve(long id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException());
+        return repository.findById(id).orElseThrow(AccountNotFoundException::new);
     }
 
     @Transactional
     public Transaction transfer(long from, long to, double amount) {
-        Account origin = repository.lockedFindById(from).orElseThrow(() -> new DestinationNotFoundException());
-        Account destination = repository.lockedFindById(to).orElseThrow(() -> new OriginNotFoundException());
+        Account origin = repository.lockedFindById(from).orElseThrow(DestinationNotFoundException::new);
+        Account destination = repository.lockedFindById(to).orElseThrow(OriginNotFoundException::new);
 
         if (origin.getBalance() < amount) {
-            throw new UnsufficientFoundsException();
+            throw new InsufficientFoundsException();
         }
         origin.addToBalance(-amount);
         destination.addToBalance(amount);
@@ -40,9 +42,5 @@ public class AccountService {
         repository.save(destination);
 
         return transactionService.createSuccessfulTransaction(amount, from, to);
-    }
-
-    public Transaction retrieveTransaction() {
-        return null;
     }
 }
