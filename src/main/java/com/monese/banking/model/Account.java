@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.AUTO, generator = "account_seq")
     private Long id;
     private Double balance;
 
