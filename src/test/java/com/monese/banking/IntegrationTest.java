@@ -17,9 +17,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import static com.monese.banking.web.AccountController.TRANSACTION_SUCCESSFUL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -90,21 +92,17 @@ class IntegrationTest {
     @Test
     void testSuccessfulTransfer() throws Exception {
         double transactionAmount = 200d;
-        MvcResult mvcResult = mockMvc.perform(post("/accounts/transaction?origin=" + origin.getId() + "&destination=" + destination1.getId() + "&amount=" + transactionAmount)
+        mockMvc.perform(post("/accounts/transaction?origin=" + origin.getId() + "&destination=" + destination1.getId() + "&amount=" + transactionAmount)
+                .contentType("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(TRANSACTION_SUCCESSFUL))
+                .andReturn();
+
+        MvcResult mvcResult = mockMvc.perform(get("/accounts/" + destination1.getId())
                 .contentType("application/json"))
                 .andExpect(status().isOk())
                 .andReturn();
-
-        TransactionAPI transactionAPI = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), TransactionAPI.class);
-        assertEquals(TransactionType.OUTBOUND, transactionAPI.getType());
-        assertEquals(destination1.getId(), transactionAPI.getAccount());
-        assertEquals(-transactionAmount, transactionAPI.getAmount());
-
-        MvcResult mvcResult2 = mockMvc.perform(get("/accounts/" + destination1.getId())
-                .contentType("application/json"))
-                .andExpect(status().isOk())
-                .andReturn();
-        AccountAPI accountAPI = objectMapper.readValue(mvcResult2.getResponse().getContentAsString(), AccountAPI.class);
+        AccountAPI accountAPI = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), AccountAPI.class);
         assertEquals(destination1.getId(), accountAPI.getId());
         assertEquals(destination1.getBalance() + 200d, accountAPI.getBalance());
 

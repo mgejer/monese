@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-//TODO integration test of application
-
 @RestController
 @RequestMapping(path = "/accounts")
 public class AccountController {
+
+    public static final String TRANSACTION_SUCCESSFUL = "Transaction successful";
 
     @Autowired
     private AccountService accountService;
@@ -34,7 +34,8 @@ public class AccountController {
     }
 
     @PostMapping("/transaction")
-    public ResponseEntity<TransactionAPI> postTransaction(@RequestParam long origin, @RequestParam long destination, @RequestParam double amount) {
-        return new ResponseEntity(transactionMapper.map(origin, accountService.transfer(origin, destination, amount)), HttpStatus.OK);
+    public String postTransaction(@RequestParam long origin, @RequestParam long destination, @RequestParam double amount) {
+        accountService.transfer(origin, destination, amount);
+        return TRANSACTION_SUCCESSFUL;
     }
 }

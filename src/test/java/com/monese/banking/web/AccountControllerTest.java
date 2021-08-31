@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static com.monese.banking.web.AccountController.TRANSACTION_SUCCESSFUL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.eq;
@@ -101,7 +102,7 @@ class AccountControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        assertEquals(objectMapper.writeValueAsString(transactionAPI), mvcResult.getResponse().getContentAsString());
+        assertEquals(TRANSACTION_SUCCESSFUL, mvcResult.getResponse().getContentAsString());
     }
 
     @Test

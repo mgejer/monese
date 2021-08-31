@@ -10,7 +10,6 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-//TODO: unit test
 @Component
 public class AccountMapper {
     @Autowired
