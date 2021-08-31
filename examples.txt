@@ -1,0 +1,5 @@
+#Get account status
+GET http://localhost:8080/accounts/2
+
+#Post transaction
+POST http://localhost:8080/accounts/transaction?origin=2&destination=4&amount=2000

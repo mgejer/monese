@@ -1,9 +1,7 @@
 Monese Banking Challenge
-
     This project is an attempt to resolve the banking challenge proposed by Monese.
 
 Resolution
-
     This project is divided in three layers:
         - Web : Receive and response http request
         - Service: Contains domain rules.
@@ -36,6 +34,7 @@ Next steps
     - I would make the  POST new transaction asynchronous, storing tasks on a queue.
         This would help us retry on failed transactions due to network issues or timeouts on locks.
     - A fixed amount of transaction could be returned in the GET accounts, with a proper pagination.
+    - This project is running on port 8080. That could be changed by property.
 
 Build, test and deploy
 
