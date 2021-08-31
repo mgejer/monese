@@ -6,7 +6,6 @@ import com.monese.banking.dao.AccountRepository;
 import com.monese.banking.model.Account;
 import com.monese.banking.service.AccountService;
 import com.monese.banking.web.mapper.AccountAPI;
-import com.monese.banking.web.mapper.TransactionAPI;
 import com.monese.banking.web.mapper.TransactionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
