@@ -21,6 +21,9 @@ public class Transaction {
         this.destination = destination;
     }
 
+    public Transaction() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -41,4 +44,14 @@ public class Transaction {
         return destination;
     }
 
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", amount=" + amount +
+                ", date=" + date +
+                ", origin=" + origin +
+                ", destination=" + destination +
+                '}';
+    }
 }

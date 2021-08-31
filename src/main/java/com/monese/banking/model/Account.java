@@ -12,12 +12,12 @@ public class Account {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     private Double balance;
-    //@OneToMany
-    //private final List<Transaction> transactions;
 
     public Account(Double balance) {
         this.balance = balance;
-      //  this.transactions = transactions;
+    }
+
+    public Account() {
     }
 
     public Long getId() {
@@ -32,9 +32,6 @@ public class Account {
         balance += amount;
     }
 
-    /*public List<Transaction> getTransactions() {
-        return transactions;
-    }*/
 
     @Override
     public String toString() {
