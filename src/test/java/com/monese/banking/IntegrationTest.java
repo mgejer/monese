@@ -122,7 +122,7 @@ class IntegrationTest {
         mockMvc.perform(post("/accounts/transaction?origin=" + origin.getId() + "&destination=" + destination1.getId() + "&amount=" + transactionAmount)
                 .contentType("application/json"))
                 .andExpect(status().is(400))
-                .andExpect(status().reason("Origin account does not have enough funds"))
+                .andExpect(content().string("Origin account does not have enough funds"))
                 .andReturn();
     }
 

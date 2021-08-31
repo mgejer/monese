@@ -7,6 +7,9 @@ import com.monese.banking.exceptions.OriginNotFoundException;
 import com.monese.banking.exceptions.InsufficientFoundsException;
 import com.monese.banking.model.Account;
 import com.monese.banking.model.Transaction;
+import com.monese.banking.web.AccountController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +17,8 @@ import javax.transaction.Transactional;
 
 @Component
 public class AccountService {
+
+    private Logger logger = LoggerFactory.getLogger(AccountService.class);
 
     @Autowired
     private AccountRepository repository;
@@ -31,6 +36,7 @@ public class AccountService {
         Account destination = repository.lockedFindById(to).orElseThrow(DestinationNotFoundException::new);
 
         if (origin.getBalance() < amount) {
+            logger.error("Insufficient funds to transfer {} from account {}", amount, from);
             throw new InsufficientFoundsException();
         }
         origin.addToBalance(-amount);
@@ -39,5 +45,9 @@ public class AccountService {
         repository.save(destination);
 
         return transactionService.createSuccessfulTransaction(amount, from, to);
+    }
+
+    public Account create(Double balance) {
+        return repository.save(new Account(balance));
     }
 }

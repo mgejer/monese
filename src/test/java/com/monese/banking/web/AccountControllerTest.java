@@ -10,16 +10,13 @@ import com.monese.banking.model.Transaction;
 import com.monese.banking.service.AccountService;
 import com.monese.banking.service.TransactionService;
 import com.monese.banking.web.mapper.*;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -87,7 +84,7 @@ class AccountControllerTest {
         mockMvc.perform(get("/accounts/100")
                 .contentType("application/json"))
                 .andExpect(status().is(404))
-                .andExpect(status().reason("Account not found"))
+                .andExpect(content().string("Account not found"))
                 .andReturn();
     }
 
@@ -110,8 +107,8 @@ class AccountControllerTest {
         when(service.transfer(1, 2, 300)).thenThrow(new OriginNotFoundException());
 
         mockMvc.perform(post("/accounts/transaction?origin=1&destination=2&amount=300").contentType("application/json"))
-                .andExpect(status().is(400))
-                .andExpect(status().reason("Origin account not found"))
+                .andExpect(status().is(404))
+                .andExpect(content().string("Origin account not found"))
                 .andReturn();
     }
 
@@ -120,8 +117,8 @@ class AccountControllerTest {
         when(service.transfer(1, 2, 300)).thenThrow(new DestinationNotFoundException());
 
         mockMvc.perform(post("/accounts/transaction?origin=1&destination=2&amount=300").contentType("application/json"))
-                .andExpect(status().is(400))
-                .andExpect(status().reason("Destination account not found"))
+                .andExpect(status().is(404))
+                .andExpect(content().string("Destination account not found"))
                 .andReturn();
     }
 
@@ -131,7 +128,7 @@ class AccountControllerTest {
 
         mockMvc.perform(post("/accounts/transaction?origin=1&destination=2&amount=300").contentType("application/json"))
                 .andExpect(status().is(400))
-                .andExpect(status().reason("Origin account does not have enough funds"))
+                .andExpect(content().string("Origin account does not have enough funds"))
                 .andReturn();
     }
 }
