@@ -12,9 +12,6 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 
-//TODO create test for retrieve.
-//TODO check tests of transfer
-
 @Component
 public class AccountService {
 

@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjuster;
 import java.util.Collection;
 import java.util.Optional;
 
 import static java.time.LocalDateTime.now;
-
-//TODO unit tests
 
 @Component
 public class TransactionService {
@@ -23,10 +23,10 @@ public class TransactionService {
     private Integer defaultAmountOfDaysSearch;
 
     public Collection<Transaction> findByAccount(long accountId, Optional<Integer> amountOfDays) {
-        return repository.findByAccountId(accountId, now().minusDays(amountOfDays.orElse(defaultAmountOfDaysSearch)));
+        return repository.findByAccountId(accountId, LocalDate.now().atStartOfDay().minusDays(amountOfDays.orElse(defaultAmountOfDaysSearch)));
     }
 
-    public Transaction createSuccessfulTransaction (double amount, long from, long to) {
+    Transaction createSuccessfulTransaction (double amount, long from, long to) {
         return repository.save(new Transaction(amount, now(), from, to));
     }
 }
